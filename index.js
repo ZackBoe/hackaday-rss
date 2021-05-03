@@ -7,17 +7,23 @@ const got = require('got')
 
 const hackadayKey = process.env.hackadayKey
 
+app.use(express.static('public'))
+app.get('/', (req, res) => {
+  res.sendFile(require('path').join(__dirname, '/index.html'));
+})
+
 app.get('/project/:projectID', async (req, res) => {
   let project = await got(`https://api.hackaday.io/v1/projects/${req.params.projectID}?api_key=${hackadayKey}`, {responseType: 'json'})
   let projectLogs = await got(`https://api.hackaday.io/v1/projects/${req.params.projectID}/logs?api_key=${hackadayKey}`, {responseType: 'json'})
 
   const feed = new Feed({
-    title: `Hackaday ${project.body.name}`,
+    title: `[Hackaday] ${project.body.name}`,
     description: project.body.summary,
     id: project.body.url,
     link: project.body.url,
     image: project.body.image_url,
-    updated: new Date(project.body.updated*1000)
+    updated: new Date(project.body.updated*1000),
+    generator: 'Hackaday-RSS - https://hackaday-rss.fly.dev - https://github.com/zackboe/hackaday-rss'
   })
 
   const items = await Promise.all(projectLogs.body.logs.map(async (log) => {
@@ -39,12 +45,14 @@ app.get('/project/:projectID', async (req, res) => {
 
   feed.items = items
 
+  console.log(`Served project ${project.body.id} with ${feed.items.length} entries - [UA:${req.get('User-Agent')}]`)
+
   res.set('Content-Type', 'application/atom+xml');
-  res.set('Content-Disposition', `attachment; filename="Hackaday_${project.id}"`)
+  res.set('Content-Disposition', `attachment; filename="Hackaday_${project.body.id}"`)
   res.send(feed.atom1())
 
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Listening at http://localhost:${port}`)
 })
