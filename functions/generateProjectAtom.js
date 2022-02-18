@@ -54,7 +54,7 @@ async function handler(event, context, opts = {}) {
       'Content-Disposition': `attachment; filename="Hackaday_${project.body.id}.atom"`
     },
     body: feed.atom1(),
-    ttl: 300,
+    ttl: 21600,
   };
 }
 
