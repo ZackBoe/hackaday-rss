@@ -1,6 +1,6 @@
 const { builder } = require("@netlify/functions")
 const { Feed } = require('feed')
-const got = require('got')
+const { got } = require('got')
 
 const hackadayKey = process.env.hackadayKey
 
@@ -16,6 +16,22 @@ async function handler(event, context, opts = {}) {
   }
 
   let project = await got(`https://api.hackaday.io/v1/projects/${projectID}?api_key=${hackadayKey}`, {responseType: 'json'})
+  .catch((error) => {
+    console.error(`Error ${error?.response?.statusCode || ''} fetching project id [${projectID}] from Hackaday.`)
+  })
+
+  if (!project?.body?.name) {
+    return {
+      // Netlify on-demand builders have to return 200??
+      statusCode: 200,
+      headers: {
+        'Content-Type': 'text/html',
+      },      
+      body: `Error fetching project from Hackaday.`,
+      ttl: 3600
+    };
+  }
+
   let projectLogs = await got(`https://api.hackaday.io/v1/projects/${projectID}/logs?api_key=${hackadayKey}`, {responseType: 'json'})
   
   const feed = new Feed({
