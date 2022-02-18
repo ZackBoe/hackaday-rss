@@ -11,9 +11,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
     "feed": "^4.2.2",
     "got": "^11.8.2"
+  },
+  "devDependencies": {
+    "@netlify/functions": "^1.0.0"
   }
 }

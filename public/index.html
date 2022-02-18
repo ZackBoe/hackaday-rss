@@ -18,8 +18,8 @@
   <meta property="og:description" content="Generate RSS Feeds from Hackaday.io Projects">
   <meta property="og:locale" content="en_US">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://hackaday-rss.fly.dev">
-  <link rel="canonical" href="https://hackaday-rss.fly.dev">
+  <meta property="og:url" content="https://hackaday-rss.zackboe.hm">
+  <link rel="canonical" href="https://hackaday-rss.zackboe.hm">
 
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📑</text></svg>">
   <link rel="icon" href="/favicon.ico">
@@ -33,12 +33,12 @@
     <h1>Hackaday Project RSS Feeds</h1>
     <h2>Subscribe to <a href="https://hackaday.io/projects">Hackaday projects</a> in your reader of choice!</h2>
 
-    <p>Serves project logs as atom feeds at <code>https://hackaday-rss.fly.dev/project/:id</code>. The <a href="https://hackaday.io/project/46-hackadayio-project"><em>Hackaday.io Project</em></a> has an ID of <code>46</code> and is hosted <a href="https://hackaday-rss.fly.dev/project/46">here</a> </p>
+    <p>Serves project logs as atom feeds at <code>https://hackaday-rss.zackboe.hm/project/:id</code>. The <a href="https://hackaday.io/project/46-hackadayio-project"><em>Hackaday.io Project</em></a> has an ID of <code>46</code> and is hosted <a href="https://hackaday-rss.zackboe.hm/project/46">here</a>. Feeds are cached for 6 hours.</p>
 
-    <form>
+    <form name="form">
       <label for="projectURL">Hackaday Project URL:</label>
       <div>
-        <input id="projectURL" placeholder="https://hackaday.io/project/46-hackadayio-project"/>
+        <input name="projectURL" id="projectURL" placeholder="https://hackaday.io/project/46-hackadayio-project"/>
         <button type="submit">Get Feed URL</button>
       </div>
       <p id="projectFeed"> </p>
@@ -52,10 +52,9 @@
 
   document.querySelector('form').addEventListener('submit', (e) => {
     e.preventDefault()
-    re = /https:\/\/hackaday.io\/project\/(\d*)-/i
-    projectID = re.exec(document.querySelector('#projectURL').value)?.[1]
-    if(projectID) document.querySelector('#projectFeed').innerHTML = `This project's feed is at <a href="https://hackaday-rss.fly.dev/project/${projectID}">https://hackaday-rss.fly.dev/project/${projectID}</a>`
-    else document.querySelector('#projectFeed').innerHTML = `Couldn't find the feed ID, sorry!`
+    projectID = /https:\/\/hackaday.io\/project\/(\d*)-/i.exec(form.projectURL.value)?.[1]
+    if(projectID) document.querySelector('#projectFeed').innerHTML = `This project's feed is at <a href="https://hackaday-rss.zackboe.hm/project/${projectID}">https://hackaday-rss.zackboe.hm/project/${projectID}</a>`
+    else document.querySelector('#projectFeed').innerHTML = `Couldn't find project ID from URL submitted, sorry!`
   })
 
 </script>

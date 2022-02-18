@@ -1,0 +1,11 @@
+[build]  
+  publish = "public/"
+
+[functions]
+  directory = "functions/"
+
+[[redirects]]
+    from = "/project/:id"
+    to = "/.netlify/builders/generateProjectAtom"
+    status = 200
+    force = true

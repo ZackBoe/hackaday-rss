@@ -28,3 +28,6 @@ temp/
 *.rss
 *.atom
 *.xml
+
+# Local Netlify folder
+.netlify
