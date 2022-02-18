@@ -15,8 +15,6 @@ async function handler(event, context, opts = {}) {
     };
   }
 
-  console.log(event)
-
   let project = await got(`https://api.hackaday.io/v1/projects/${projectID}?api_key=${hackadayKey}`, {responseType: 'json'})
   let projectLogs = await got(`https://api.hackaday.io/v1/projects/${projectID}/logs?api_key=${hackadayKey}`, {responseType: 'json'})
   
